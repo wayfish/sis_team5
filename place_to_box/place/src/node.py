@@ -14,8 +14,8 @@ pose_pub = rospy.Publisher("deck_pose",PoseStamped,queue_size=1)
 deck_pose = Pose()
 deck_ps = PoseStamped()
 
-deck_pose.position.x = 0.35 - 0.03
-deck_pose.position.y = 0.0 - 0.02
+deck_pose.position.x = 0.35
+deck_pose.position.y = 0.0
 deck_pose.position.z = 0.08  #0.14  
 deck_pose.orientation.x = 0
 deck_pose.orientation.y = 0.707
