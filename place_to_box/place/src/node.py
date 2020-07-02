@@ -16,15 +16,15 @@ deck_ps = PoseStamped()
 
 deck_pose.position.x = 0.32 - 0.03
 deck_pose.position.y = 0.0 - 0.02
-deck_pose.position.z = 0.052 -0.05 #0.14  
+deck_pose.position.z = 0.052 -0.01 #0.14  
 deck_pose.orientation.x = 0
-deck_pose.orientation.y = 0
+deck_pose.orientation.y = 0.707
 deck_pose.orientation.z = 0
-deck_pose.orientation.w = 1
+deck_pose.orientation.w = 0.707
 
-deck_ps.pose.position.x = 0.33
-deck_ps.pose.position.y = 0.0 - 0.02
-deck_ps.pose.position.z = 0.052 -0.1 #0.14
+deck_ps.pose.position.x = 0.35
+deck_ps.pose.position.y = 0.0
+deck_ps.pose.position.z = 0.052  #0.14
 deck_ps.pose.orientation.x = 0
 deck_ps.pose.orientation.y = 0
 deck_ps.pose.orientation.z = 0
