@@ -1,5 +1,4 @@
 <launch>
-  <node pkg="place" type="placing.py" name="placing" output="screen"/>
   <node pkg="place" type="node.py" name="pe_node" output="screen"/>
   <!-- rviz -->
   <node pkg="rviz" type="rviz" name="rviz"/>
