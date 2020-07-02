@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="grasp" type="node_gp.py" name="gp_node" output="screen"/>
+  <!-- rviz -->
+  <node pkg="rviz" type="rviz" name="rviz"/>
+</launch>
+
+
