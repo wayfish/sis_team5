@@ -9,7 +9,7 @@ from place.srv import data, dataResponse
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import PoseStamped
 
-pose_pub = rospy.Publisher("deck_pose",PoseStamped,queue_size=1)
+pose_pub = rospy.Publisher("ob_pose",PoseStamped,queue_size=1)
 
 ob_pose = Pose()
 ob_ps = PoseStamped()
