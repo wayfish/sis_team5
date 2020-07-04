@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
+from roslib import message
 import numpy as np
 from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
@@ -26,7 +27,7 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
     for large point clouds, this will be <much> faster.
     '''
     # construct a numpy record type equivalent to the point type of this cloud
-    gen = pc2.read_points(PointCloud2, skip_nans=True)
+    gen = pc2.read_points(cloud_msg, skip_nans=True)
     int_data = list(gen)
     bound_l = -0.10 
     bound_r = 0.10 
@@ -53,17 +54,17 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
         if ((r+g+b)>675) and (x[2]>0.05):
             if x[1]< bound_l:
                 bound_l = x[1]
-                dk_pose[0,:]= x[0:2]
+                dk_pose[0,:]= x[0:3]
             elif x[1]> bound_r:
                 bound_r = x[1]
-                dk_pose[1,:]= x[0:2]  
+                dk_pose[1,:]= x[0:3]  
                 
             if x[0]< bound_u:
                 bound_u = x[0]
-                dk_pose[2,:]= x[0:2]
+                dk_pose[2,:]= x[0:3]
             elif x[0]> bound_d:
                 bound_d = x[0]
-                dk_pose[3,:]= x[0:2] 
+                dk_pose[3,:]= x[0:3] 
         else :
             if x[1]< vaild_l:
                 vaild_l = x[1]
