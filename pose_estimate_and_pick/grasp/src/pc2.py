@@ -79,11 +79,11 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
         w_dem1 = np.sqrt(np.square(dk_pose[2,0]-dk_pose[1,0])+np.square(dk_pose[2,1]-dk_pose[1,1]))
         h_dem2 = np.sqrt(np.square(dk_pose[1,0]-dk_pose[3,0])+np.square(dk_pose[1,1]-dk_pose[3,1]))
         w_dem2 = np.sqrt(np.square(dk_pose[3,0]-dk_pose[0,0])+np.square(dk_pose[3,1]-dk_pose[0,1]))
-        h_de = np.mean(h_dem1,h_dem2)
-        w_de = np.mean(w_dem1,w_dem2)
+        h_dem =  np.mean(np.append(h_dem1,h_dem2))
+        w_dem = np.mean(np.append(w_dem1,w_dem2))
         
-        print("height",h_de)
-        print("width",w_de)
+        print("height",h_dem)
+        print("width",w_dem)
         if np.min(h_dem,w_dem)<0.235: #need padding to long enough
             if vaild_u < bound_u: #grow up
                 if h_dem<w_dem:
