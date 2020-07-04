@@ -48,10 +48,10 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
         pack = ctypes.c_uint32(i).value
         r = (pack & 0x00FF0000)>> 16
         g = (pack & 0x0000FF00)>> 8
-        b = (pack & 0x0000FF00)
+        b = (pack & 0x000000FF)
     #x[0] ->x , x[1] -> y , x[2] -> z
         print(r,g,b)
-        if ((r+g+b)>550) and (x[2]>0.05) and (x[2]<0.25):
+        if (int(r+g+b)>550) and (x[2]>0.05) and (x[2]<0.25):
             if x[1]< bound_l:
                 bound_l = x[1]
                 dk_pose[0,:]= x[0:3]
