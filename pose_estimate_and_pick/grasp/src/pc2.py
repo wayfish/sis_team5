@@ -8,7 +8,7 @@ import ctypes
 import struct
 from geometry_msgs.msg import PoseStamped
 
-dk_pose = np.zeros((4,3)) #四點的三個pose , 左右上下 #直接改變全域變數dk_pose
+dk_pose = np.zeros((4,3)) #xyz_4_point,lrup 
 
 pose_pub = rospy.Publisher("dk_pose",PoseStamped,queue_size=5)
 
@@ -28,10 +28,10 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
     # construct a numpy record type equivalent to the point type of this cloud
     gen = pc2.read_points(PointCloud2, skip_nans=True)
     int_data = list(gen)
-    bound_l = -0.10 #左邊界 ->要確認視同時上下界還是沒有
-    bound_r = 0.10 #右邊界 ->要確認視同時上下界還是沒有
-    bound_u = 0.40 #上邊界 ->要確認視同時左右界還是沒有
-    bound_d = 0.25 #下邊界 ->要確認視同時左右界還是沒有
+    bound_l = -0.10 
+    bound_r = 0.10 
+    bound_u = 0.40
+    bound_d = 0.25
     vaild_l = 0.20
     vaild_r = -0.20   
     vaild_u = 0.05
@@ -83,8 +83,8 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
         
         print("height",h_de)
         print("width",w_de)
-        if np.min(h_dem,w_dem)<0.235:#太淺，需要補齊
-            if vaild_u < bound_u: #往上長
+        if np.min(h_dem,w_dem)<0.235: #need padding to long enough
+            if vaild_u < bound_u: #grow up
                 if h_dem<w_dem:
                     dk_pose[0,:] = dk_pose[2,:]+(0.235/h_dem))*(dk_pose[0,:]-dk_pose[2,:])
                     dk_pose[3,:] = dk_pose[1,:]+(0.235/h_dem))*(dk_pose[3,:]-dk_pose[1,:])
@@ -92,7 +92,7 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
                     dk_pose[3,:] = dk_pose[0,:]+(0.235/h_dem))*(dk_pose[3,:]-dk_pose[0,:])
                     dk_pose[1,:] = dk_pose[2,:]+(0.235/h_dem))*(dk_pose[1,:]-dk_pose[2,:])                    
                     
-            elif vaild_d > bound_d: #往下長
+            elif vaild_d > bound_d: #grow down
                 if h_dem<w_dem:
                     dk_pose[1,:] = dk_pose[3,:]-(0.235/h_dem))*(dk_pose[3,:]-dk_pose[1,:])
                     dk_pose[2,:] = dk_pose[0,:]-(0.235/h_dem))*(dk_pose[0,:]-dk_pose[2,:])
