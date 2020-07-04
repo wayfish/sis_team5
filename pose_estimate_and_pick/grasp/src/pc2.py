@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import rospy
 import numpy
 from sensor_msgs.msg import PointCloud2
