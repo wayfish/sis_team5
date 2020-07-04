@@ -37,7 +37,7 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
     vaild_r = -0.20   
     vaild_u = 0.05
     vaild_d = 0.6
-
+    dk_pose = np.zeros((4,3))
     
     for x in int_data:
         test = x[3] 
@@ -50,7 +50,7 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
         g = (pack & 0x0000FF00)>> 8
         b = (pack & 0x000000FF)
     #x[0] ->x , x[1] -> y , x[2] -> z
-        print(r,g,b)
+        
         if (int(r+g+b)>550) and (x[2]>0.05) and (x[2]<0.25):
             if x[1]< bound_l:
                 bound_l = x[1]
@@ -74,32 +74,33 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
                 vaild_u = x[0]
             elif x[0]> vaild_d:
                 vaild_d = x[0]
-                
-        h_dem1 = np.sqrt(np.square(dk_pose[0,0]-dk_pose[2,0])+np.square(dk_pose[0,1]-dk_pose[2,1]))
-        w_dem1 = np.sqrt(np.square(dk_pose[2,0]-dk_pose[1,0])+np.square(dk_pose[2,1]-dk_pose[1,1]))
-        h_dem2 = np.sqrt(np.square(dk_pose[1,0]-dk_pose[3,0])+np.square(dk_pose[1,1]-dk_pose[3,1]))
-        w_dem2 = np.sqrt(np.square(dk_pose[3,0]-dk_pose[0,0])+np.square(dk_pose[3,1]-dk_pose[0,1]))
-        h_dem =  np.mean(np.append(h_dem1,h_dem2))
-        w_dem = np.mean(np.append(w_dem1,w_dem2))
+        dk_pose[dk_pose!=dk_pose]=0
         
-        print("height",h_dem)
-        print("width",w_dem)
-        if np.min(np.append(h_dem,w_dem))<0.235: #need padding to long enough
-            if vaild_u < bound_u: #grow up
-                if h_dem<w_dem:
-                    dk_pose[0,:] = dk_pose[2,:]+(0.24/h_dem)*(dk_pose[0,:]-dk_pose[2,:])
-                    dk_pose[3,:] = dk_pose[1,:]+(0.24/h_dem)*(dk_pose[3,:]-dk_pose[1,:])
-                else:
-                    dk_pose[3,:] = dk_pose[0,:]+(0.24/w_dem)*(dk_pose[3,:]-dk_pose[0,:])
-                    dk_pose[1,:] = dk_pose[2,:]+(0.24/w_dem)*(dk_pose[1,:]-dk_pose[2,:])                    
+    h_dem1 = np.sqrt(np.square(dk_pose[0,0]-dk_pose[2,0])+np.square(dk_pose[0,1]-dk_pose[2,1]))
+    w_dem1 = np.sqrt(np.square(dk_pose[2,0]-dk_pose[1,0])+np.square(dk_pose[2,1]-dk_pose[1,1]))
+    h_dem2 = np.sqrt(np.square(dk_pose[1,0]-dk_pose[3,0])+np.square(dk_pose[1,1]-dk_pose[3,1]))
+    w_dem2 = np.sqrt(np.square(dk_pose[3,0]-dk_pose[0,0])+np.square(dk_pose[3,1]-dk_pose[0,1]))
+    h_dem =  np.mean(np.append(h_dem1,h_dem2))
+    w_dem = np.mean(np.append(w_dem1,w_dem2))
+        
+    print("height",h_dem)
+    print("width",w_dem)
+    if np.min(np.append(h_dem,w_dem))<0.235: #need padding to long enough
+        if vaild_u < bound_u: #grow up
+            if h_dem<w_dem:
+                dk_pose[0,:] = dk_pose[2,:]+(0.24/h_dem)*(dk_pose[0,:]-dk_pose[2,:])
+                dk_pose[3,:] = dk_pose[1,:]+(0.24/h_dem)*(dk_pose[3,:]-dk_pose[1,:])
+            else:
+                dk_pose[3,:] = dk_pose[0,:]+(0.24/w_dem)*(dk_pose[3,:]-dk_pose[0,:])
+                dk_pose[1,:] = dk_pose[2,:]+(0.24/w_dem)*(dk_pose[1,:]-dk_pose[2,:])                    
                     
-            elif vaild_d > bound_d: #grow down
-                if h_dem < w_dem:
-                    dk_pose[1,:] = dk_pose[3,:]-(0.24/h_dem)*(dk_pose[3,:]-dk_pose[1,:])
-                    dk_pose[2,:] = dk_pose[0,:]-(0.24/h_dem)*(dk_pose[0,:]-dk_pose[2,:])
-                else:
-                    dk_pose[2,:] = dk_pose[1,:]-(0.24/w_dem)*(dk_pose[1,:]-dk_pose[2,:])
-                    dk_pose[0,:] = dk_pose[3,:]-(0.24/w_dem)*(dk_pose[3,:]-dk_pose[0,:])               
+        elif vaild_d > bound_d: #grow down
+            if h_dem < w_dem:
+                dk_pose[1,:] = dk_pose[3,:]-(0.24/h_dem)*(dk_pose[3,:]-dk_pose[1,:])
+                dk_pose[2,:] = dk_pose[0,:]-(0.24/h_dem)*(dk_pose[0,:]-dk_pose[2,:])
+            else:
+                dk_pose[2,:] = dk_pose[1,:]-(0.24/w_dem)*(dk_pose[1,:]-dk_pose[2,:])
+                dk_pose[0,:] = dk_pose[3,:]-(0.24/w_dem)*(dk_pose[3,:]-dk_pose[0,:])               
                         
 
     deck0.pose.position.x = dk_pose[0,0]
