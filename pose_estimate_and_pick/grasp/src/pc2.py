@@ -51,7 +51,7 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
         b = (pack & 0x0000FF00)
     #x[0] ->x , x[1] -> y , x[2] -> z
         print(r,g,b)
-        if ((r+g+b)>675) and (x[2]>0.05) and (x[2]<0.25):
+        if ((r+g+b)>550) and (x[2]>0.05) and (x[2]<0.25):
             if x[1]< bound_l:
                 bound_l = x[1]
                 dk_pose[0,:]= x[0:3]
@@ -84,7 +84,7 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
         
         print("height",h_dem)
         print("width",w_dem)
-        if np.min(h_dem,w_dem)<0.235: #need padding to long enough
+        if np.min(np.append(h_dem,w_dem))<0.235: #need padding to long enough
             if vaild_u < bound_u: #grow up
                 if h_dem<w_dem:
                     dk_pose[0,:] = dk_pose[2,:]+(0.24/h_dem)*(dk_pose[0,:]-dk_pose[2,:])
