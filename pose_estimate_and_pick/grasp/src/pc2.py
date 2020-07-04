@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-import numpy
+import numpy as np
 from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 import ctypes
