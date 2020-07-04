@@ -86,19 +86,19 @@ def pointcloud2_to_array(cloud_msg, squeeze=True):
         if np.min(h_dem,w_dem)<0.235: #need padding to long enough
             if vaild_u < bound_u: #grow up
                 if h_dem<w_dem:
-                    dk_pose[0,:] = dk_pose[2,:]+(0.235/h_dem))*(dk_pose[0,:]-dk_pose[2,:])
-                    dk_pose[3,:] = dk_pose[1,:]+(0.235/h_dem))*(dk_pose[3,:]-dk_pose[1,:])
+                    dk_pose[0,:] = dk_pose[2,:]+(0.235/h_dem)*(dk_pose[0,:]-dk_pose[2,:])
+                    dk_pose[3,:] = dk_pose[1,:]+(0.235/h_dem)*(dk_pose[3,:]-dk_pose[1,:])
                 else:
-                    dk_pose[3,:] = dk_pose[0,:]+(0.235/h_dem))*(dk_pose[3,:]-dk_pose[0,:])
-                    dk_pose[1,:] = dk_pose[2,:]+(0.235/h_dem))*(dk_pose[1,:]-dk_pose[2,:])                    
+                    dk_pose[3,:] = dk_pose[0,:]+(0.235/w_dem)*(dk_pose[3,:]-dk_pose[0,:])
+                    dk_pose[1,:] = dk_pose[2,:]+(0.235/w_dem)*(dk_pose[1,:]-dk_pose[2,:])                    
                     
             elif vaild_d > bound_d: #grow down
-                if h_dem<w_dem:
-                    dk_pose[1,:] = dk_pose[3,:]-(0.235/h_dem))*(dk_pose[3,:]-dk_pose[1,:])
-                    dk_pose[2,:] = dk_pose[0,:]-(0.235/h_dem))*(dk_pose[0,:]-dk_pose[2,:])
+                if h_dem < w_dem:
+                    dk_pose[1,:] = dk_pose[3,:]-(0.235/h_dem)*(dk_pose[3,:]-dk_pose[1,:])
+                    dk_pose[2,:] = dk_pose[0,:]-(0.235/h_dem)*(dk_pose[0,:]-dk_pose[2,:])
                 else:
-                    dk_pose[2,:] = dk_pose[1,:]-(0.235/h_dem))*(dk_pose[1,:]-dk_pose[2,:])
-                    dk_pose[0,:] = dk_pose[3,:]-(0.235/h_dem))*(dk_pose[3,:]-dk_pose[0,:])               
+                    dk_pose[2,:] = dk_pose[1,:]-(0.235/w_dem)*(dk_pose[1,:]-dk_pose[2,:])
+                    dk_pose[0,:] = dk_pose[3,:]-(0.235/w_dem)*(dk_pose[3,:]-dk_pose[0,:])               
                         
 
     deck0.pose.position.x = dk_pose[0,0]
