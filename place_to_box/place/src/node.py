@@ -39,7 +39,7 @@ rospy.init_node('test_pose')
 r = rospy.Rate(10)
 
 counter = 0
-while counter<1000:
+while counter<360:
     pose_pub.publish(deck_ps)
     r.sleep()
     if counter%60 ==0:
