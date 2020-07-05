@@ -8,11 +8,11 @@ cd competition_modules/pose_estimate_and_pick/grasp/src
 chmod +x dataset2_pub.py
 (put v3 pkl by google drive in models/subt_model)
 cd ~/sis_competition_template
-vim run_task.sh 
-grasp
 source docker_build.sh
 docker tag sis_competition_2020:latest sis_competition_2020:pose_team5
 source docker_run.sh pose_team5
+vim run_task.sh 
+grasp
 source catkin_make.sh
 source environment.sh
 source run_task.sh
