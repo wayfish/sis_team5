@@ -80,11 +80,11 @@ PoseEstimator::PoseEstimator(){
 	pose_publisher3 = nh.advertise<geometry_msgs::PoseStamped> ("kusan_position", 1);
 	
 	scene_cloud_sub = nh.subscribe("/camera/depth_registered/points", 1, &PoseEstimator::updateScenePoints, this); //keyword: callback function in class 
-	object_mask_sub1 = nh.subscribe("object_mask", 1, &PoseEstimator::getObjectsPointCloudWithMask1, this);
-	object_mask_sub2 = nh.subscribe("object_mask", 1, &PoseEstimator::getObjectsPointCloudWithMask2, this);
-	object_mask_sub3 = nh.subscribe("object_mask", 1, &PoseEstimator::getObjectsPointCloudWithMask3, this);
+	object_mask_sub1 = nh.subscribe("/object/mask", 1, &PoseEstimator::getObjectsPointCloudWithMask1, this);
+	object_mask_sub2 = nh.subscribe("/object/mask", 1, &PoseEstimator::getObjectsPointCloudWithMask2, this);
+	object_mask_sub3 = nh.subscribe("/object/mask", 1, &PoseEstimator::getObjectsPointCloudWithMask3, this);
 	
-	get_id= nh.subscribe("object_id", 1,&PoseEstimator::getObjectsID, this);// 
+	get_id= nh.subscribe("/object/ID", 1,&PoseEstimator::getObjectsID, this);// 
 	ros::ServiceClient client = nh.serviceClient<grasp::data>("grasp");
 	
   	car_to_camera_transform = Eigen::Matrix4f::Identity();
