@@ -114,13 +114,14 @@ class PoseEstimator{
 		void updateScenePoints(const sensor_msgs::PointCloud2::ConstPtr& cloud);
 		void loadModelHelper(pcl::PointCloud<PointXYZRGB>::Ptr object, std::string object_name);
 		void loadModels();
-		void filterObjectPointCloud(PointCloud<PointXYZRGB>::Ptr cloud, cv_bridge::CvImagePtr mask, std::string object);
+		void filterObjectPointCloud(PointCloud<PointXYZRGB>::Ptr cloud, cv_bridge::CvImagePtr mask, int object_id);
 		std::vector<double> icpAlignByPointToPlaneMethod (PointCloud<PointXYZRGB>::Ptr sourceCloud, PointCloud<PointXYZRGB>::Ptr targetCloud, PointCloud<PointXYZRGB>::Ptr cloud_source_trans_normals );
 		void addNormal(PointCloud<PointXYZRGB>::Ptr cloud, PointCloud<PointXYZRGBNormal>::Ptr cloud_with_normals);
-		void getObjectsPointCloudWithMaskr(const sensor_msgs::Image::ConstPtr& mask);
-		void getObjectsPointCloudWithMaskg(const sensor_msgs::Image::ConstPtr& mask);
-		void getObjectsPointCloudWithMaskb(const sensor_msgs::Image::ConstPtr& mask);
+		void getObjectsPointCloudWithMask1(const sensor_msgs::Image::ConstPtr& mask);
+		void getObjectsPointCloudWithMask2(const sensor_msgs::Image::ConstPtr& mask);
+		void getObjectsPointCloudWithMask3(const sensor_msgs::Image::ConstPtr& mask);
 		void pointCloudPreprocessing(PointCloud<PointXYZRGB>::Ptr object_cloud);
+	        void getObjectsID(const std_msgs::Int64::ConstPtr& msg_ID);
 		void setTF();
 		void publishFinalTf(std::vector<double> pose);
 
