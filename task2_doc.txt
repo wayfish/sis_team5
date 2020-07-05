@@ -2,6 +2,8 @@
 cd sis_competition_template
 git clone https://https://github.com/wayfish/sis_team5.git
 mv -f sis_team5/pose_new/grasp competition_modules/pose_estimate_and_pick
+vim run_task.sh 
+grasp
 source docker_build.sh
 docker tag sis_competition_2020:latest sis_competition_2020:pose_team5
 source docker_run.sh pose_team5
