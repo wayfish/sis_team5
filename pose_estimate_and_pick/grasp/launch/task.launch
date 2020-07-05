@@ -1,7 +1,7 @@
 <launch>
-  <node pkg="grasp" type="pc2.py" name="point_cloud" output="screen"/>
+  <node pkg="grasp" type="node_gp.py" name="gp_cloud" output="screen"/>
   <!-- rviz -->
-  <node pkg="rviz" type="rviz" name="rviz"/>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find place)/config/rviz/task2.rviz"/>
 </launch>
 
 
