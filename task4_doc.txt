@@ -15,7 +15,7 @@ source run_task.sh
 locobot
 source ~/pyenv_pyrobot/bin/activate
 -----wait (source run_task.sh)------
-rosrun grasp grasping.py
+rosrun place placing.py
 
 (terminal3)
 locobot
