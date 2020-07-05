@@ -1,7 +1,8 @@
 (terminal1)
 cd sis_competition_template
 git clone https://https://github.com/wayfish/sis_team5.git
-mv -f sis_team5/place_to_box competition_modules/
+rm -r competition_modules/place_to_box
+mv sis_team5/place_to_box competition_modules/
 cd competition_modules/place_to_box/place/src
 chmod +x node.py
 cd ~/sis_competition_template
