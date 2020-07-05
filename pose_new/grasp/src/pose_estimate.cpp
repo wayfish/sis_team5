@@ -67,13 +67,13 @@ PoseEstimator::PoseEstimator(){
   	kusan_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/kusan", 1);
   	doublemint_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/doublemint", 1);
   
-  	icp_result1_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/icp_result", 1);
-	icp_result2_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/icp_result", 1);
-	icp_result3_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/icp_result", 1);
+  	icp_result1_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/icp_result1", 1);
+	icp_result2_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/icp_result2", 1);
+	icp_result3_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/icp_result3", 1);
 	
-	target1_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/target", 1);
-	target2_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/target", 1);
-	target3_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/target", 1);
+	target1_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/target1", 1);
+	target2_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/target2", 1);
+	target3_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/target3", 1);
 	test_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/test", 1);
 	pose_publisher1 = nh.advertise<geometry_msgs::PoseStamped> ("kusan_position", 1);
 	pose_publisher2 = nh.advertise<geometry_msgs::PoseStamped> ("kinder_position", 1);
@@ -106,18 +106,18 @@ void PoseEstimator::getObjectsPointCloudWithMask1(const sensor_msgs::Image::Cons
   cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(mask); 
 
   //Generate object point cloud
-  pcl::copyPointCloud(*scene_cloud, *target_cloud);
-  filterObjectPointCloud(target_cloud, cv_ptr, 1);
+  pcl::copyPointCloud(*scene_cloud, *target1_cloud);
+  filterObjectPointCloud(target1_cloud, cv_ptr, 1);
 	//filter
   pcl::VoxelGrid<PointXYZRGB> sor;
-  sor.setInputCloud (target_cloud);
+  sor.setInputCloud (target1_cloud);
   sor.setLeafSize (0.003f, 0.003f, 0.003f);
-  sor.filter (*target_cloud);  
+  sor.filter (*target1_cloud);  
 	
 		if (target_cloud->points.size() > cloud_size_thres){
 		  //std::vector<double> pose = icpAlignByPointToPlaneMethod( target_cloud, kusan_model, icp_result_cloud); 
 		    			
-			std::vector<double> pose = icpAlignByPointToPlaneMethod( kusan_model, target_cloud, icp_result_cloud);
+			std::vector<double> pose = icpAlignByPointToPlaneMethod( kusan_model, target1_cloud, icp_result1_cloud);
 
 			std::cout<<"pose:"<<std::endl;
 			for(int i=0; i<pose.size(); i++){
@@ -149,14 +149,14 @@ void PoseEstimator::getObjectsPointCloudWithMask1(const sensor_msgs::Image::Cons
 			publishFinalTf(pose);
 		}
  
-	target_cloud->header.frame_id = "/my_camera_frame";
-	pcl_conversions::toPCL(ros::Time::now(), target_cloud->header.stamp);
-	target_publisher.publish(*target_cloud);
+	target1_cloud->header.frame_id = "/my_camera_frame";
+	pcl_conversions::toPCL(ros::Time::now(), target1_cloud->header.stamp);
+	target1_publisher.publish(*target1_cloud);
 	//printf("target cloud size: %ld\n", target_cloud->points.size());
 
-	icp_result_cloud->header.frame_id = "/my_camera_frame";
-	pcl_conversions::toPCL(ros::Time::now(), icp_result_cloud->header.stamp);
-	icp_result_publisher.publish(*icp_result_cloud);
+	icp_result1_cloud->header.frame_id = "/my_camera_frame";
+	pcl_conversions::toPCL(ros::Time::now(), icp_result1_cloud->header.stamp);
+	icp_result1_publisher.publish(*icp_result1_cloud);
 	
 }
 
@@ -165,18 +165,18 @@ void PoseEstimator::getObjectsPointCloudWithMask2(const sensor_msgs::Image::Cons
   cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(mask); 
 
   //Generate object point cloud
-  pcl::copyPointCloud(*scene_cloud, *target_cloud);
-  filterObjectPointCloud(target_cloud, cv_ptr, 2);
+  pcl::copyPointCloud(*scene_cloud, *target2_cloud);
+  filterObjectPointCloud(target2_cloud, cv_ptr, 2);
 	//filter
   pcl::VoxelGrid<PointXYZRGB> sor;
-  sor.setInputCloud (target_cloud);
+  sor.setInputCloud (target2_cloud);
   sor.setLeafSize (0.003f, 0.003f, 0.003f);
-  sor.filter (*target_cloud);  
+  sor.filter (*target2_cloud);  
 	
 		if (target_cloud->points.size() > cloud_size_thres){
 		  //std::vector<double> pose = icpAlignByPointToPlaneMethod( target_cloud, kusan_model, icp_result_cloud); 
 
-			std::vector<double> pose = icpAlignByPointToPlaneMethod( kinder_model, target_cloud, icp_result_cloud);	
+			std::vector<double> pose = icpAlignByPointToPlaneMethod( kinder_model, target2_cloud, icp_result2_cloud);	
 
 			std::cout<<"pose:"<<std::endl;
 			for(int i=0; i<pose.size(); i++){
@@ -208,14 +208,14 @@ void PoseEstimator::getObjectsPointCloudWithMask2(const sensor_msgs::Image::Cons
 			publishFinalTf(pose);
 		}
  
-	target_cloud->header.frame_id = "/my_camera_frame";
-	pcl_conversions::toPCL(ros::Time::now(), target_cloud->header.stamp);
-	target_publisher.publish(*target_cloud);
+	target2_cloud->header.frame_id = "/my_camera_frame";
+	pcl_conversions::toPCL(ros::Time::now(), targe2t_cloud->header.stamp);
+	target2_publisher.publish(*target2_cloud);
 	//printf("target cloud size: %ld\n", target_cloud->points.size());
 
-	icp_result_cloud->header.frame_id = "/my_camera_frame";
-	pcl_conversions::toPCL(ros::Time::now(), icp_result_cloud->header.stamp);
-	icp_result_publisher.publish(*icp_result_cloud);
+	icp_result2_cloud->header.frame_id = "/my_camera_frame";
+	pcl_conversions::toPCL(ros::Time::now(), icp_result2_cloud->header.stamp);
+	icp_result2_publisher.publish(*icp_result2_cloud);
 	
 }
 
@@ -224,19 +224,19 @@ void PoseEstimator::getObjectsPointCloudWithMask3(const sensor_msgs::Image::Cons
   cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(mask); 
 
   //Generate object point cloud
-  pcl::copyPointCloud(*scene_cloud, *target_cloud);
-  filterObjectPointCloud(target_cloud, cv_ptr, 3);
+  pcl::copyPointCloud(*scene_cloud, *target3_cloud);
+  filterObjectPointCloud(target3_cloud, cv_ptr, 3);
 	//filter
   pcl::VoxelGrid<PointXYZRGB> sor;
-  sor.setInputCloud (target_cloud);
+  sor.setInputCloud (target3_cloud);
   sor.setLeafSize (0.003f, 0.003f, 0.003f);
-  sor.filter (*target_cloud);  
+  sor.filter (*target3_cloud);  
 	
 		if (target_cloud->points.size() > cloud_size_thres){
 		  //std::vector<double> pose = icpAlignByPointToPlaneMethod( target_cloud, kusan_model, icp_result_cloud); 
 
 				
-			std::vector<double> pose = icpAlignByPointToPlaneMethod( doublemint_model, target_cloud, icp_result_cloud);
+			std::vector<double> pose = icpAlignByPointToPlaneMethod( doublemint_model, target3_cloud, icp_result3_cloud);
 				
 			std::cout<<"pose:"<<std::endl;
 			for(int i=0; i<pose.size(); i++){
@@ -268,14 +268,14 @@ void PoseEstimator::getObjectsPointCloudWithMask3(const sensor_msgs::Image::Cons
 			publishFinalTf(pose);
 		}
  
-	target_cloud->header.frame_id = "/my_camera_frame";
-	pcl_conversions::toPCL(ros::Time::now(), target_cloud->header.stamp);
-	target_publisher.publish(*target_cloud);
+	target3_cloud->header.frame_id = "/my_camera_frame";
+	pcl_conversions::toPCL(ros::Time::now(), target3_cloud->header.stamp);
+	target3_publisher.publish(*target3_cloud);
 	//printf("target cloud size: %ld\n", target_cloud->points.size());
 
-	icp_result_cloud->header.frame_id = "/my_camera_frame";
-	pcl_conversions::toPCL(ros::Time::now(), icp_result_cloud->header.stamp);
-	icp_result_publisher.publish(*icp_result_cloud);
+	icp_result3_cloud->header.frame_id = "/my_camera_frame";
+	pcl_conversions::toPCL(ros::Time::now(), icp_result3_cloud->header.stamp);
+	icp_result3_publisher.publish(*icp_result3_cloud);
 	
 }
 
