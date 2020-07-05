@@ -1,4 +1,7 @@
 (terminal1)
+cd sis_competition_template
+git clone https://github.com/wayfish/sis_team5.git
+----------------------------------------------
 rm -r competition_modules/pose_estimate_and_pick
 mv sis_team5/pose_new/grasp competition_modules/pose_estimate_and_pick
 cd competition_modules/pose_estimate_and_pick/grasp/src
