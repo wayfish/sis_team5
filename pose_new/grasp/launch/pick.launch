@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="grasp" type="pose_estimate" name="gp_node" output="screen"/>
+  <!-- rviz -->
+  <node pkg="rviz" type="rviz" name="rviz"/>
+</launch>
