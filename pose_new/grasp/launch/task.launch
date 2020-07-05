@@ -1,4 +1,5 @@
 <launch>
+  <node pkg="grasp" type="dataset2_pub.py" name="mask_id_pub" output="screen"/>
   <node pkg="grasp" type="pose_estimate" name="gp_node" output="screen"/>
   <!-- rviz -->
   <node pkg="rviz" type="rviz" name="rviz"/>
