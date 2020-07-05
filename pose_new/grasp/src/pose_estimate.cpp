@@ -3,6 +3,10 @@
 #include "grasp/data.h"
 #include "std_msgs/Int64.h"
 
+bool ob1_exi = true;
+bool ob2_exi = true;
+bool ob3_exi = true;
+
 void PoseEstimator::publishFinalTf(std::vector<double> pose){
 	tf_final.setRotation( tf::Quaternion(pose[0], pose[1], pose[2], pose[3]) );
 	tf_final.setOrigin( tf::Vector3(pose[4], pose[5], pose[6]) );
@@ -121,12 +125,12 @@ void PoseEstimator::getObjectsPointCloudWithMask1(const sensor_msgs::Image::Cons
 			}
 			std::cout<<std::endl;
 			//distance1 = sqrt(pose[4]*pose[4] + pose[5]*pose[5] + pose[6]*pose[6]);
-			//if(distance1 < distance2 && distance1 < distance3){
+			if(ob1_exi){
 			geometry_msgs::PoseStamped msg;	
 			msg.pose.position.x = pose[4];
 			msg.pose.position.y = pose[5];
 			msg.pose.position.z = pose[6];
-			pose_publisher2.publish(msg);
+			pose_publisher1.publish(msg);
 				
 			if ( ob_ID==1){
 				geometry_msgs::Pose msg_g;
@@ -141,7 +145,7 @@ void PoseEstimator::getObjectsPointCloudWithMask1(const sensor_msgs::Image::Cons
 				srv.request.pose = msg_g;
 				srv.request.id = ob_ID;
 				client.call(srv);}
-			//}
+			}
 			publishFinalTf(pose);
 		}
  
@@ -180,7 +184,7 @@ void PoseEstimator::getObjectsPointCloudWithMask2(const sensor_msgs::Image::Cons
 			}
 			std::cout<<std::endl;
 			//distance1 = sqrt(pose[4]*pose[4] + pose[5]*pose[5] + pose[6]*pose[6]);
-			//if(distance1 < distance2 && distance1 < distance3){
+			if(ob2_exi){
 			geometry_msgs::PoseStamped msg;	
 			msg.pose.position.x = pose[4];
 			msg.pose.position.y = pose[5];
@@ -200,7 +204,7 @@ void PoseEstimator::getObjectsPointCloudWithMask2(const sensor_msgs::Image::Cons
 				srv.request.pose = msg_g;
 				srv.request.id = ob_ID;
 				client.call(srv);}
-			//}
+			}
 			publishFinalTf(pose);
 		}
  
@@ -240,7 +244,7 @@ void PoseEstimator::getObjectsPointCloudWithMask3(const sensor_msgs::Image::Cons
 			}
 			std::cout<<std::endl;
 			//distance1 = sqrt(pose[4]*pose[4] + pose[5]*pose[5] + pose[6]*pose[6]);
-			//if(distance1 < distance2 && distance1 < distance3){
+			if(ob3_exi){
 			geometry_msgs::PoseStamped msg;	
 			msg.pose.position.x = pose[4];
 			msg.pose.position.y = pose[5];
@@ -260,7 +264,7 @@ void PoseEstimator::getObjectsPointCloudWithMask3(const sensor_msgs::Image::Cons
 				srv.request.pose = msg_g;
 				srv.request.id = ob_ID;
 				client.call(srv);}
-			//}
+			}
 			publishFinalTf(pose);
 		}
  
@@ -373,6 +377,27 @@ void PoseEstimator::filterObjectPointCloud(PointCloud<PointXYZRGB>::Ptr cloud, c
 				}
       }
 	}
+
+	if (object_id==1)
+	{ 
+		if(count >= (640*480-5) )
+		{
+			ob1_exi=false;	
+		}
+	} else if (object_id==2)
+	{ 
+		if(count >= (640*480-5) )
+		{
+			ob2_exi=false;	
+		}
+	} else if (object_id==3)
+	{ 
+		if(count >= (640*480-5) )
+		{
+			ob3_exi=false;	
+		}
+	}
+	
 	//std::cout<< "count: " << count << std::endl;
 	//remove NAN
 	std::vector<int> indices;
