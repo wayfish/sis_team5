@@ -7,11 +7,11 @@ mv sis_team5/place_to_box competition_modules/
 cd competition_modules/place_to_box/place/src
 chmod +x node.py
 cd ~/sis_competition_template
-vim run_task.sh 
-place
 source docker_build.sh
 docker tag sis_competition_2020:latest sis_competition_2020:place_team5
 source docker_run.sh place_team5
+vim run_task.sh 
+place
 source catkin_make.sh
 source environment.sh
 source run_task.sh
