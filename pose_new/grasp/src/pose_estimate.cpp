@@ -75,9 +75,9 @@ PoseEstimator::PoseEstimator(){
 	target2_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/target2", 1);
 	target3_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/camera/target3", 1);
 	test_publisher = nh.advertise<sensor_msgs::PointCloud2> ("/model/test", 1);
-	pose_publisher1 = nh.advertise<geometry_msgs::PoseStamped> ("kusan_position", 1);
+	pose_publisher1 = nh.advertise<geometry_msgs::PoseStamped> ("double_mint_position", 1);
 	pose_publisher2 = nh.advertise<geometry_msgs::PoseStamped> ("kinder_position", 1);
-	pose_publisher3 = nh.advertise<geometry_msgs::PoseStamped> ("double_mint_position", 1);
+	pose_publisher3 = nh.advertise<geometry_msgs::PoseStamped> ("kusan_position", 1);
 	
 	scene_cloud_sub = nh.subscribe("/camera/depth_registered/points", 1, &PoseEstimator::updateScenePoints, this); //keyword: callback function in class 
 	object_mask_sub1 = nh.subscribe("object_mask", 1, &PoseEstimator::getObjectsPointCloudWithMask1, this);
@@ -117,7 +117,7 @@ void PoseEstimator::getObjectsPointCloudWithMask1(const sensor_msgs::Image::Cons
 		if (target_cloud->points.size() > cloud_size_thres){
 		  //std::vector<double> pose = icpAlignByPointToPlaneMethod( target_cloud, kusan_model, icp_result_cloud); 
 		    			
-			std::vector<double> pose = icpAlignByPointToPlaneMethod( kusan_model, target1_cloud, icp_result1_cloud);
+			std::vector<double> pose = icpAlignByPointToPlaneMethod(doublemint_model, target1_cloud, icp_result1_cloud);
 
 			std::cout<<"pose:"<<std::endl;
 			for(int i=0; i<pose.size(); i++){
@@ -236,7 +236,7 @@ void PoseEstimator::getObjectsPointCloudWithMask3(const sensor_msgs::Image::Cons
 		  //std::vector<double> pose = icpAlignByPointToPlaneMethod( target_cloud, kusan_model, icp_result_cloud); 
 
 				
-			std::vector<double> pose = icpAlignByPointToPlaneMethod( doublemint_model, target3_cloud, icp_result3_cloud);
+			std::vector<double> pose = icpAlignByPointToPlaneMethod( kusan_model, target3_cloud, icp_result3_cloud);
 				
 			std::cout<<"pose:"<<std::endl;
 			for(int i=0; i<pose.size(); i++){
