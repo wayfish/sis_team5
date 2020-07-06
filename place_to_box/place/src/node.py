@@ -23,7 +23,7 @@ deck_pose.orientation.z = 0
 deck_pose.orientation.w = 0.707
 
 deck_ps.pose.position.x = 0.335 + 0.06
-deck_ps.pose.position.y = -0.01 -0.03
+deck_ps.pose.position.y = -0.01 -0.02
 deck_ps.pose.position.z = 0.105  #0.14
 deck_ps.pose.orientation.x = 0
 deck_ps.pose.orientation.y = 0
