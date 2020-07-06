@@ -280,8 +280,8 @@ def callback(data):
     green_pose.orientation.w = 0.707
     
     green_ps.pose.position.x = get_edge.l_get(edge_c[:,1])[0]+0.06
-    green_ps.pose.position.y = get_edge.l_get(edge_c[:,1])[1]-0.03
-    green_ps.pose.position.z = 0.085  #0.14
+    green_ps.pose.position.y = get_edge.l_get(edge_c[:,1])[1]-0.02
+    green_ps.pose.position.z = 0.11  #0.14
     green_ps.pose.orientation.x = 0
     green_ps.pose.orientation.y = 0
     green_ps.pose.orientation.z = 0
@@ -289,8 +289,8 @@ def callback(data):
     green_ps.header.frame_id = "map"
 
     blue_ps.pose.position.x = get_edge.l_get(edge_c[:,2])[0]+0.06
-    blue_ps.pose.position.y = get_edge.l_get(edge_c[:,2])[1]-0.03
-    blue_ps.pose.position.z = 0.085  #0.14
+    blue_ps.pose.position.y = get_edge.l_get(edge_c[:,2])[1]-0.02
+    blue_ps.pose.position.z = 0.11  #0.14
     blue_ps.pose.orientation.x = 0
     blue_ps.pose.orientation.y = 0
     blue_ps.pose.orientation.z = 0
@@ -298,8 +298,8 @@ def callback(data):
     blue_ps.header.frame_id = "map"
 
     red_ps.pose.position.x = get_edge.l_get(edge_c[:,0])[0]+0.06
-    red_ps.pose.position.y = get_edge.l_get(edge_c[:,0])[1]-0.03
-    red_ps.pose.position.z = 0.085  #0.14
+    red_ps.pose.position.y = get_edge.l_get(edge_c[:,0])[1]-0.02
+    red_ps.pose.position.z = 0.11  #0.14
     red_ps.pose.orientation.x = 0
     red_ps.pose.orientation.y = 0
     red_ps.pose.orientation.z = 0
