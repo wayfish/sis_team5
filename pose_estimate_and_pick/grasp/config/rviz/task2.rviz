@@ -95,7 +95,7 @@ Visualization Manager:
       Shaft Length: 1
       Shaft Radius: 0.05000000074505806
       Shape: Axes
-      Topic: /ob_pose
+      Topic: /green_ps
       Unreliable: false
       Value: true
   Enabled: true
